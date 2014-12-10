@@ -1,3 +1,4 @@
+<html><body>
 <?php
 /*
 preg_grep
@@ -14,6 +15,16 @@ function pr($a, $b, $c){
     return preg_replace($a, $b, $c);
 }
 
+for($i=0;$i<8;$i++){
+    echo '<br />' .preg_replace('#http:\/\/(.*?)\.(.*?)\.(.*?)\/(.*?)\/(.*?)\/([0-9]?)#', '$'.$i, 'http://example.net.com/controller/action/3');
+}
+
+$string = '<a href="http://example.com/page/subpage/title" onclick="open(\'http://www.scratch24.com\'); return false;"> link do gier</a>';
+
+//echo '<br />' .preg_replace('#http:\/\/(.*)\/page\/(.*)#', 'String 1: $1 and String $2', htmlspecialchars($string)); 
+//echo '<br />' .preg_replace();    
+    
+    
 $toPregReplace = array(
 'http://example.com' =>     array('/http:\/\/(.*?)\.(.*)/', '$1'),
 'http://example.net.com' => array('/http:\/\/(.*?)\.(.*)/', '$1'),
@@ -40,11 +51,11 @@ foreach($toPregReplace as $k => $v){
     echo '<td>'.pr($v[0], $v[1], $k).'</td>';
     echo '<td><pre>';
    
-    preg_match($v[0], $k, $matches);
-    foreach($matches as $k2=>$v2){
-        echo htmlspecialchars($k2)." => ".htmlspecialchars($v2)."<br>";
-    }
-   
+//    preg_match($v[0], $k, $matches);
+//    foreach($matches as $k2=>$v2){
+//        echo htmlspecialchars($k2)." => ".htmlspecialchars($v2)."<br>";
+//    }
+//   
    
     echo '</pre></td>';
     echo '</tr>';
@@ -52,4 +63,4 @@ foreach($toPregReplace as $k => $v){
 
 echo '</table>';
 
-
+echo '</body></html>';
