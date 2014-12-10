@@ -40,13 +40,7 @@ class Palindrome {
         
     }
 }
-//header('Content-type: text/html; charset=iso-8859-2');
-//setlocale(LC_ALL, 'Polish_Poland.28592');
-//$zm = 'zŁY';
-//$ok = iconv("iso-8859-2", 'utf-8' , $zm);
-//$ok = strtolower($zm);
 
-//echo $ok;
 echo var_dump(Palindrome::isPalindrome('Noel sees Leon.'));   // Example case
 echo var_dump(Palindrome::isPalindrome('lal'));               // Simple cases
 echo var_dump(Palindrome::isPalindrome('Łał'));               // Edge cases
