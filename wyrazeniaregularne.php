@@ -14,11 +14,8 @@ class regularexpress{
     private $aReg = array();
 
     /**
-     * My preg replace function
      * 
-     * @param type $pattern
-     * @param type $replacement
-     * @param type $string
+     * @return array result
      */
     private function prepareResult() {
         foreach($this->aReg as $string => $val){
@@ -27,6 +24,14 @@ class regularexpress{
         return $aOut;
         
     }
+    /**
+     * Add pattern to array
+     * 
+     * @param type $pattern
+     * @param type $replacement
+     * @param type $string
+     * @return boolean
+     */
     public function addArrayExpress($pattern , $replacement , $string) {
         $pattern = htmlspecialchars($pattern);
         $string  = htmlspecialchars($string);
@@ -39,37 +44,33 @@ class regularexpress{
             return false;
         }
     }
+    /**
+     * 
+     * @return boolean
+     */
     public function showResutls() {
         $results = $this->prepareResult();
         if(count($results)>0){
-            echo '<table><tr><td>Example 1</td><td>Example 2</td><tr>';
+            echo '<table><tr><td style="border:1px black solid">Example 1</td><td style="border:1px black solid">Example 2</td><tr>';
             foreach($results as $val):
-                echo '<td>';
-                    print_r($val);
+                echo '<td style="border:1px black solid">';
+                    echo $val;
                 echo '</td>';
             endforeach;    
             echo '</tr></table>';
         }else{
             return false;
         }
-        
+        return true;
     }
     
 }
 
 $myregexpr = new regularexpress();
 $myregexpr->addArrayExpress('#http:\/\/(.*?)\.(.*?)\.(.*?)\/(.*?)\/(.*?)\/([0-9]?)#', '<br /><br />$0 <br /><br />$1 <br />$2 <br />$3 <br />$4 <br />$5 <br />$6 <br />$7', 'http://example.net.com/controller/action/3');
-$myregexpr->addArrayExpress('#<a href="(.*)" onclick="(.*)"> link(.*)([0-9]*) ([0-9]*) ([a-z].e.*)</a>#', '<br /><br />$0 <br /><br />$1 <br />$2 <br />$3 <br />$4 <br />$5 <br />$6 <br />$7', '<a href="http://example.com/page/subpage/title" onclick="open(\'http://www.scratch24.com\'); return false;"> link do 434 833 gierr gierr</a>');
+$myregexpr->addArrayExpress('#<a href="(.*)" onclick="(.*)"> link(.*)([0-9]*) ([0-9]*) ([a-z]ie.{1,2}) gier(.*)</a>#', '<br /><br />$0 <br /><br />$1 <br />$2 <br />$3 <br />$4 <br />$5 <br />$6 <br />$7', '<a href="http://example.com/page/subpage/title" onclick="open(\'http://www.scratch24.com\'); return false;"> link do 434 833 gierr gierrrr</a>');
 $myregexpr->showResutls();
 
-
-
-//$string = '';
-//$pattern = '';
-//for($i=0;$i<8;$i++){
-//    echo '<br /><br />' .preg_replace(htmlspecialchars($pattern), '$'.$i, htmlspecialchars($string)); 
-//}
-//    
 
 
 
