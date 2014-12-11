@@ -68,7 +68,7 @@ class regularexpress{
 
 $myregexpr = new regularexpress();
 $myregexpr->addArrayExpress('#http:\/\/(.*?)\.(.*?)\.(.*?)\/(.*?)\/(.*?)\/([0-9]?)#', '<br /><br />$0 <br /><br />$1 <br />$2 <br />$3 <br />$4 <br />$5 <br />$6 <br />$7', 'http://example.net.com/controller/action/3');
-$myregexpr->addArrayExpress('#<a href="(.*)" onclick="(.*)"> link(.*)([0-9]*) ([0-9]*) ([a-z]ie.{1,2}) gier(.*)</a>#', '<br /><br />$0 <br /><br />$1 <br />$2 <br />$3 <br />$4 <br />$5 <br />$6 <br />$7', '<a href="http://example.com/page/subpage/title" onclick="open(\'http://www.scratch24.com\'); return false;"> link do 434 833 gierr gierrrr</a>');
+$myregexpr->addArrayExpress('#<a href="(.*)" onclick="(.*)"> link (.*) ([0-9]+) ([0-9]*) ([a-z]ie.{1,2}) (.*)-([a-z]{3})</a>#', '<br /><br />$0 <br /><br />$1 <br />$2 <br />$3 <br />$4 <br />$5 <br />$6 <br />$7 <br />$8', '<a href="http://example.com/page/subpage/title" onclick="open(\'http://www.scratch24.com\'); return false;"> link do 434434 833 gierr gier-rrr</a>');
 $myregexpr->showResutls();
 
 
