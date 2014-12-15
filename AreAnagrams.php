@@ -17,6 +17,7 @@ class AreAnagrams {
             return false;
         }
 
+        
         return true;
 
         //throw new Exception('Waiting to be implemented.');
