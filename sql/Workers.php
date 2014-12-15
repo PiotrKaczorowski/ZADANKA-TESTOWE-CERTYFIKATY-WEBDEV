@@ -1,8 +1,15 @@
 <?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+var_dump(PDO::getAvailableDrivers());
+class connect{
+    private $dns = "mysql:host=locahost;port=3306;dbname=workers";
+    private $username = "worker";
+    private $password = "worker";
+    
+    function __construct(){
+        try{
+            $pdo = new PDO($dsn, $username, $passwd);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+}
