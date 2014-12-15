@@ -37,7 +37,7 @@ class Salary{
         }
     }
     function getData(){
-        $val =  "SELECT DISTINCT salary FROM emp ORDER BY salary DESC LIMIT 1  OFFSET 1";
+        $val =  "SELECT DISTINCT salary FROM emp ORDER BY salary DESC Limit 1 OFFSET 1";
         $val2 = "SELECT MAX(salary) as salary FROM emp WHERE salary < (SELECT MAX(salary) FROM emp)";
     
         $query = $this->pdo->query($val);
