@@ -6,7 +6,6 @@
     </head>
     <body>
         <?php
-        //http://www.testdome.com/Questions/PHP/NamesCount/762?testId=30&testDifficulty=Easy
         class NamesCount {
 
             private $count;
