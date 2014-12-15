@@ -33,8 +33,8 @@ WHERE e.id NOT IN (
  */
 class connect{
     private $dns = "mysql:host=localhost;port=3306;dbname=worker";
-    private $username = "root";
-    private $password = "";
+    private $username = "worker";
+    private $password = "worker";
     private $pdo;
             
     function __construct(){
