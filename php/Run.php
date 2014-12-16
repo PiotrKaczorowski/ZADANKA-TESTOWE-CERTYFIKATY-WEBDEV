@@ -10,21 +10,19 @@ class Run
         foreach ($aStr as $key => $val) {
             
             if(($key!=0) && $aStr[$key-1] == $val) {
-     //           if(!isset($aRes[$val])){
                     $aRes[$val] = ++$i;
-      //          }
             }else{
                 $i = 1;
                 $aRes[$val] = $i;
             }
-           
-            
         }
-        return $aRes;
-        //throw new Exception('Not implemented');
+        $aRes2 = array_flip($aRes);
+        
+        return strpos( $str , $aRes2[max($aRes)]);
     }
+ 
 }
 
 // For testing purposes (do not submit uncommented):
 
-print_r(Run::indexOfLongestRun('aaaaabcccccd'));
+echo Run::indexOfLongestRun('aaaaabccccccccd');
