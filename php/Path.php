@@ -116,4 +116,4 @@ class Path {
 $path = new Path('/a/b/c/d');
 //echo $path->cd('../../x')->currentPath;
 //echo '<br />'.$path->cd('../y')->currentPath;
-echo $path->cd('../das/../fsdf')->currentPath;
+echo $path->cd('../../das/fsdf')->currentPath;
