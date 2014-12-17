@@ -10,13 +10,18 @@ class Run {
 
             if (($key != 0) && ($aStr[$key - 1] == $val)) {
                 $aRes[$val] = ++$i;
-            }else {
-                if(!array_key_exists($val, $aRes)){
+            } else {
+                // czy $val jest już w $aqRes
+                if(array_key_exists($val, $aRes)){
+                   
+                    
+                    $aRes[$val]>
+                   //$gdzie = array_search($val, $aStr);
+                }else{
                     $i = 1;
                     $aRes[$val] = $i;
-                }else{
-                   
                 }
+                    
                 
             }
         }
