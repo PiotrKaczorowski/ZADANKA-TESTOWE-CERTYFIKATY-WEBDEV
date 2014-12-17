@@ -28,11 +28,11 @@ class Run {
                 $ok = $ile;
             }
         }
-        return $aRes[$ok];
+        return strpos($str , $aRes[$ok]);
     }
 
 }
 
 // For testing purposes (do not submit uncommented):
 
-echo Run::indexOfLongestRun('aaaaaaaaaaabcccccdaaaaaaaaaaaaaqqqqbbx');
+echo Run::indexOfLongestRun('aaaaabbbbbbbbbbbbcccccdaaaaaaaqqqqbbx');
