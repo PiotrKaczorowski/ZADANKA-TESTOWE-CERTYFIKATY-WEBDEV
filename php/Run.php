@@ -13,9 +13,8 @@ class Run {
             } else {
                 // czy $val jest już w $aqRes
                 if(array_key_exists($val, $aRes)){
-                   
-                    
-                    $aRes[$val]>
+                                       
+ //                   $aRes[$val]>
                    //$gdzie = array_search($val, $aStr);
                 }else{
                     $i = 1;
