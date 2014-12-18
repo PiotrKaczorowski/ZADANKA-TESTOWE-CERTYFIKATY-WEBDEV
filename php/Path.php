@@ -72,37 +72,48 @@ class Path {
 
     private function Parse($string) {
         $string = str_replace(self::$a, self::$b, $string);
-        $string = preg_replace('#[^A-Za-z\/\.]#', '', $string);
+        $string = preg_replace('#[^A-Za-z\/\.\\\]#', '', $string);
         $string = strtolower($string);
+        $wyn = preg_match('#(\/.[^.])?#', $string , $matches);
+//        echo '<br /><br>';
+//        echo $string;
+//        print_r($matches);
+//          echo '<br /><br>';
         return $string;
     }
 
-    public function cd($newPath) {
+    public function cd($newPath = '') {
+        
         $newPath = $this->Parse($newPath);
-        $aNewPath = explode('/', $newPath);
+        
+        $aCdPath = explode('/', $newPath);
         $aCurrentPath = explode('/', $this->currentPath);
-        $this->currentPath = '';
-        $ile_w_dol = substr_count($newPath, '../') + 1;
-      
-        if (substr($newPath, 0,2) === './') {
-            return false;
-        }
-        if(preg_match_all('#[^\.]\.\/#', $newPath)){
-            return false;
-        } 
-
-        for ($i = 1; $i <= count($aCurrentPath) - $ile_w_dol; $i++) {
-            $this->currentPath .= '/' . $aCurrentPath[$i];
-        }
-        $newPathClear = str_replace('../', '', $newPath);
-        $this->currentPath .= '/' . $newPathClear;
-
-        if (substr($newPath, 0, 1) === '/') {
-
-            if(substr($newPath, 1, 1)==='.'){
-                return false;
+        
+        foreach ($aCdPath as $key => $val) {
+            if ($val === '..') {
+                array_pop($aCurrentPath); // zdejmuje ostati
+            } else {
+                array_push($aCurrentPath, $val);
             }
+        }
+        
+        $this->currentPath = implode('/', $aCurrentPath);
+        
+        if (substr($newPath, 0, 1) === '/' || substr($newPath, 0, 1) === '\\') {
             $this->currentPath = $newPath;
+        }
+        
+       
+        if ($newPath[0] === '.' && !isset($newPath[1])) {
+            $this->currentPath = substr($this->currentPath , 0 , -1 );
+        }
+//        
+//        if ($newPath[0] === '\\') {
+//            $this->currentPath = false;
+//        }
+//        
+        if (substr($newPath, 0, 2) === './') {
+            $this->currentPath = substr($this->currentPath , 0 , -2 );
         }
 
         return $this;
@@ -112,7 +123,17 @@ class Path {
 
 // For testing purposes (do not submit uncommented):
 
-$path = new Path('/x/y/z/j');
-//echo $path->cd('../../x')->currentPath;
-//echo '<br />'.$path->cd('../y')->currentPath;
-echo $path->cd('../aa/../fsdf')->currentPath;
+$path0 = new Path('/x/y/z/j');
+echo '<br />' . $path0->cd('/.x.')->currentPath;
+
+$path1 = new Path('/x/y/z/j');
+echo '<br />' . $path1->cd('../../x')->currentPath;
+
+$path2 = new Path('/x/y/z/j');
+echo '<br />' . $path2->cd('../y')->currentPath;
+
+$path3 = new Path('/x/y/z/j');
+echo '<br />' . $path3->cd('./')->currentPath;
+
+$path4 = new Path('/x/y/z/j');
+echo '<br />' . $path4->cd('\\')->currentPath;
