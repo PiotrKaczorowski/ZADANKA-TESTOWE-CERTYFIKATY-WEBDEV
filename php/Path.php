@@ -73,7 +73,6 @@ class Path {
     private function Parse($string) {
         $string = str_replace(self::$a, self::$b, $string);
         $string = preg_replace('#[^A-Za-z\/\.]#', '', $string);
-
         $string = strtolower($string);
         return $string;
     }
@@ -113,7 +112,7 @@ class Path {
 
 // For testing purposes (do not submit uncommented):
 
-$path = new Path('/a/b/c/d');
+$path = new Path('/x/y/z/j');
 //echo $path->cd('../../x')->currentPath;
 //echo '<br />'.$path->cd('../y')->currentPath;
-echo $path->cd('../../das/fsdf')->currentPath;
+echo $path->cd('../aa/../fsdf')->currentPath;

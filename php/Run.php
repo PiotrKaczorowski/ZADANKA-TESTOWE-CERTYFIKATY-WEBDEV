@@ -5,6 +5,7 @@ class Run {
     public static function indexOfLongestRun($str) {
         $string = '';      
         $aStr = str_split($str);
+    
         foreach ($aStr as $key => $val) {
             if ((count($aStr)>$key+1) && ($aStr[$key+1] === $val)) {
                 $string .= $val; 
@@ -12,12 +13,15 @@ class Run {
                 $string .= $val.'/'; 
             }
         }
+        unset($aStr);
         $aRes = explode('/' , substr($string, 0 , -1));
-
-        foreach($aRes as $key => $val){
-            $tab[$key] = strlen($val);
+        unset($string);
+//        foreach($aRes as $key => $val){
+//            $tab[$key] = strlen($val);
+//        }
+        for($i=0;$i<count($aRes);$i++) {
+            $tab[$i] = strlen($aRes[$i]);
         }
-        
 //        $max = max($tab);
 //        $ile = count($tab);
 //        while(--$ile){
@@ -26,6 +30,7 @@ class Run {
 //            }
 //        }
         $ok = array_keys($tab , max($tab));
+        unset($tab);
         return strpos($str , $aRes[$ok[0]]);
     }
 
