@@ -1,3 +1,34 @@
+<?php
+/*
+ 
+ *  Fix the bugs.
+  
+ 
+class NamesCount
+{
+    private $count;
+    private $counts = array();
+
+    public function addName($name)
+    {
+        if (array_key_exists($name, $this->counts)) {
+            $nameCount = $this->counts[$name];
+        } else {
+            $nameCount = 0;
+            $this->counts[$name] = $nameCount;
+        }
+
+        $nameCount++;
+        $this->count++;
+    }
+	
+    public function nameProportion($name)
+    {
+        return $this->counts[$name] / $this->count;
+    }
+}
+*/
+?>
 <!DOCTYPE html>
 <html>
     <head>
