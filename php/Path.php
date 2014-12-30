@@ -1,13 +1,14 @@
 <?php
 /*
+ *  100%
  * 
-Write a function that provides change directory (cd) function for an abstract file system.
-
-Notes:
-- Root path is '/'.
-- Path separator is '/'.
-- Parent directory is addressable as '..'.
-- Directory names consist only of English alphabet letters (A-Z and a-z).
+ * Write a function that provides change directory (cd) function for an abstract file system.
+ * Notes:
+ * - Root path is '/'.
+ * - Path separator is '/'.
+ * - Parent directory is addressable as '..'.
+ * - Directory names consist only of English alphabet letters (A-Z and a-z).
+ * 
 
 For example:
 $path = new Path('/a/b/c/d');
@@ -28,7 +29,7 @@ class Path {
     private function Parse($string) {
 
         $string = str_replace(self::$a, self::$b, $string);
-        $string = preg_replace('#[^A-Za-z\\.\\/]#', '', $string);
+        $string = preg_replace('#[^A-Za-z\/\.\\\]#', '', $string);
         $string = strtolower($string);
         $string = str_replace('\\', '/' , $string);
         return $string;
@@ -55,34 +56,12 @@ class Path {
             $this->currentPath = $newPath;
         }
         
-//       
-     //   if ($newPath[0] === '.' && !isset($newPath[1])) {
-     //       $this->currentPath = substr($this->currentPath , 0 , -1 );
-     //   }
-
-        if (substr($newPath, 0, 2) === './') {
-            $this->currentPath = substr($this->currentPath , 0 , -2 );
+        if (substr($this->currentPath, 0, 1) !== '/') {
+            $this->currentPath = '/' . $this->currentPath ;
         }
-
         return $this;
     }
 
 }
-
-//// For testing purposes (do not submit uncommented):
-//
-$path0 = new Path('/x/y/z/j/');
-echo '<br />' . $path0->cd('/.x.')->currentPath;
-//
-$path1 = new Path('/x/y/z/j/');
-echo '<br />' . $path1->cd('../../x')->currentPath;
-//
-$path2 = new Path('/x/y/z/j/');
-echo '<br />' . $path2->cd('../y/./g')->currentPath;
-//
-$path3 = new Path('/x/y/z/j');
-echo '<br />' . $path3->cd('./')->currentPath;
-//
-$path4 = new Path('/x/y/z/j');
-echo '<br />' . $path4->cd('\\')->currentPath;
-//echo $string = preg_replace('#[0-9]([A-Z]{0,2})#' , '$' , '9AB');
+$path = new Path('/a');
+echo '<br />' . $path->cd('../../../../b')->currentPath;

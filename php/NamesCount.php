@@ -1,6 +1,6 @@
 <?php
 /*
- 
+ *  100% 
  *  Fix the bugs.
   
  
@@ -28,16 +28,7 @@ class NamesCount
     }
 }
 */
-?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <?php
-        class NamesCount {
+class NamesCount {
 
             private $count;
             private $counts = array();
@@ -72,7 +63,5 @@ $namesCount->addName('Mary');
 
 echo $namesCount->nameProportion('John');
 echo $namesCount->nameProportion('Mary');
-
 ?>
-    </body>
-</html>
+

@@ -1,5 +1,6 @@
 <?php
 /*
+ * OK
  * 
 Given the following data definition, select all queries that return a list of employees who are not managers.
 
