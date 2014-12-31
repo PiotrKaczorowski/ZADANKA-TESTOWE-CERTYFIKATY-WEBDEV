@@ -1,7 +1,22 @@
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * 
+function registerHandlers() {
+  var as = document.getElementsByTagName('a');
+  for (i = as.length; i-- >= 0;) {
+    as[i].onclick = function() {
+      alert(i);
+      return false;
+    }
+  }
+}
+ * 
  */
-
-
+function registerHandlers() {
+  var as = document.getElementsByTagName('a');
+  for (i = as.length; i-- >= 0;) {
+    as[i].onclick = function() {
+      alert(i);
+      return false;
+    }
+  }
+}
