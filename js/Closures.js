@@ -19,19 +19,14 @@ $('document').ready(function(){
 
 function registerHandlers() {
   var as = document.getElementsByTagName('a');
-  var tab = new Array();
-  var i;
-  
-  
-  for (i = as.length-1; i >= 0; i--) {
-//    tab[i] = i;  
+   
+  for (var i = as.length-1; i >= 0; i--) {
     (function(e) {
         as[i].onclick = function() {
           alert(e);
           return false;
         };
-    })(i);
-   
+    })(i); 
   }
 }
 
