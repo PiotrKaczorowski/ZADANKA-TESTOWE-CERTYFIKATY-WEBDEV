@@ -24,10 +24,10 @@ function registerHandlers() {
   
   
   for (i = as.length-1; i >= 0; i--) {
-    tab[i] = i;  
+//    tab[i] = i;  
     (function(e) {
         as[i].onclick = function() {
-          alert(tab[e]);
+          alert(e);
           return false;
         }
     })(i);
