@@ -29,7 +29,7 @@ function registerHandlers() {
         as[i].onclick = function() {
           alert(e);
           return false;
-        }
+        };
     })(i);
    
   }
