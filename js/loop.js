@@ -1,6 +1,8 @@
 function appendChildren() { 
   var allDivs = document.getElementsByTagName("div");
-  for (i = 0; i < allDivs.length; i++) {
+  var count = allDivs.length;
+  
+  for (var i = 0; i < count; i++) {
     decorateDiv(allDivs[i]);  
   }
 }
