@@ -43,3 +43,61 @@ class Run {
 }
 
 echo Run::indexOfLongestRun('aaaaabbbbbbbbbbbbcccccdaaaaaaaqqqqbbxa');
+
+
+
+
+/*
+ ver 2
+ * 
+
+class Run {
+    /**
+     * Create new string and push it to array
+     * 
+     * @param type string
+     * @return array
+     */
+ /*   private function strToArray($str) {
+        $string = '';      
+        $aStr = str_split($str);
+            
+        foreach ($aStr as $key => $val) {
+            // Protection before going out of the array index 
+            // &&
+            //end of repeated chars  - I can see by comparing the elements of n and n + 1
+            if ((count($aStr)>$key+1) && ($aStr[$key+1] === $val)) {
+                $string .= $val; 
+            } else {
+                $string .= $val.'/'; 
+            }
+        }
+        unset($aStr);
+        return explode('/' , substr($string, 0 , -1));
+    }
+  * 
+  */
+    /**
+     * Counter of chars
+     * 
+     * @return array
+     */
+ /*   private function changeLetterToNumber($aRes) {
+        for($i=0;$i<count($aRes);$i++) {
+            $tab[$i] = strlen($aRes[$i]);
+        }
+        return $tab;
+    }
+    public static function indexOfLongestRun($str) {
+        $aRes    = self::strToArray($str);
+        $aValues = self::changeLetterToNumber($aRes);
+        $maxKeys = array_keys($aValues , max($aValues));
+        return strpos($str , $aRes[$maxKeys[0]]);
+    }
+
+}
+
+echo Run::indexOfLongestRun('aaaaabbbbbbbbbbbbcccccdaaaaaaaqqqqbbxa');
+  * 
+  * 
+  */

@@ -37,10 +37,10 @@ class Path {
 
     public function cd($newPath = '') {
         
-        $newPath = $this->Parse($newPath);
-        
-        $aNewPath = explode('/', $newPath);
         $aCurrentPath = explode('/', $this->currentPath);
+        
+        $newPath = $this->Parse($newPath);
+        $aNewPath = explode('/', $newPath);
         
         foreach ($aNewPath as $key => $val) {
             if ($val === '..') {
@@ -63,5 +63,7 @@ class Path {
     }
 
 }
+//current path
 $path = new Path('/a');
-echo '<br />' . $path->cd('../../../../b')->currentPath;
+//new path
+echo '<br />' . $path->cd('../../b')->currentPath;
