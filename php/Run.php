@@ -94,7 +94,9 @@ class Run {
     public static function indexOfLongestRun($str) {
         $aRes = self::strToArray($str);
         $aValues = self::changeLetterToNumber($aRes);
+        // give max key from table
         $maxKeys = array_keys($aValues, max($aValues));
+        // find index 
         return strpos($str, $aRes[$maxKeys[0]]);
     }
 
