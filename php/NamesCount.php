@@ -33,6 +33,11 @@ class NamesCount {
             private $count;
             private $counts = array();
 
+//            public function __construct() {    
+//                if(array_key_exists('klucz' , array('klucz' => 'wartość'))){
+//                 echo 'OK<br /><br />';
+//                }
+//            }
             public function addName($name) {
                 if (array_key_exists($name, $this->counts)) {
                     $nameCount = $this->counts[$name];
@@ -62,6 +67,6 @@ $namesCount->addName('Mary');
 
 
 echo $namesCount->nameProportion('John');
-echo $namesCount->nameProportion('Mary');
+echo '<br />'.$namesCount->nameProportion('Mary');
 ?>
 
