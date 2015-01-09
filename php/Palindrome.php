@@ -8,7 +8,7 @@
  * true as spaces, period, and case should be ignored resulting with 'noelseesleon' which is a palindrome since
  * it reads same backward and forward.
 * 
-*/
+
 class Palindrome {
  
     private static $aStr = array();
@@ -54,12 +54,12 @@ echo var_dump(Palindrome::isPalindrome('lal'));               // Simple cases
 echo var_dump(Palindrome::isPalindrome('Łał'));               // Edge cases
 echo var_dump(Palindrome::isPalindrome('123 Łoł 321 ! .'));       // Complex cases
 
-
+*/
 
 /*
  *  2 version
  *  100%
-
+*/
 
  
 class Palindrome {
@@ -74,7 +74,7 @@ class Palindrome {
      * @param type $string
      * @return string
      */
- /*
+ 
     private function Parse($string) {
         $string = str_replace(self::$a, self::$b, $string);
         // i - If this modifier is set, letters in the pattern match both upper and lower case letters.
@@ -108,4 +108,4 @@ echo var_dump(Palindrome::isPalindrome('ala.'));   // Example case
 echo var_dump(Palindrome::isPalindrome('lal'));               // Simple cases
 echo var_dump(Palindrome::isPalindrome('Łał'));               // Edge cases
 echo var_dump(Palindrome::isPalindrome('123 Łoł 321 ! .'));       // Complex cases
- */
+ 
