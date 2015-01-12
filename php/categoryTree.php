@@ -98,7 +98,7 @@ class InsertData extends DbConnect {
     public function create_exercise1() {
         $sQuery = "create table categories (
                         id serial,
-                        parent_id int8,
+                        parent_id serial,
                         name varchar(100) not null default '',
                         primary key (id)
                     );
