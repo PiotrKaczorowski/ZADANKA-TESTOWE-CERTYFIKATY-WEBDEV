@@ -1,13 +1,14 @@
 <?php
-/* 
+
+/*
  * 
-          sql
-             /   \
-    postgresql    oracle-----__
-        |        /    |        \
-     linux   solaris  linux   windows
-                     /     \
-                  glibc1   glibc2
+  sql
+  /   \
+  postgresql    oracle-----__
+  |        /    |        \
+  linux   solaris  linux   windows
+  /     \
+  glibc1   glibc2
  * 
  * 1)
  * create table categories (
@@ -18,7 +19,7 @@
  * );
  * 
  * create unique index ui_categorytable (parent_id , name);
- * alter table category add foreign key (parent_id) references categories (id)
+ * alter table category add foreign key (parent_id) references categories (id);
  * 
  * 2)
  * create table categories2 (
@@ -37,13 +38,13 @@
  * alter table relationship add foreign key (first_id)  references categories2 (id);
  * alter table relationship add foreign key (second_id) references categories2 (id);
  * 
-              sql
-             /   \
-    postgresql    oracle-----__
-        |        /    |        \
-     linux   solaris  linux   windows
-                     /     \
-                  glibc1   glibc2
+  sql
+  /   \
+  postgresql    oracle-----__
+  |        /    |        \
+  linux   solaris  linux   windows
+  /     \
+  glibc1   glibc2
  * catagory:
  * id | name                first_id|second_id|depth        first_id|second_id|depth  
  * ---------                ------------------------        ------------------------
@@ -66,47 +67,73 @@
  * 
  * Pole depth oznacza, o ile poziomów "głębiej" jest kategoria second od first.
  */
-class DbConnect{
+
+class DbConnect {
+
     private $_dns = 'mysql:host=localhost;dbname=categorytree';
     private $_username = 'root';
     private $_pass = '';
     protected $_oConn;
-    
+
     protected function __construct() {
-        if(!is_object($this->_oConn)){
-            try{
-                $this->_oConn = new PDO($this->_dns,$this->_username,$this->_pass); 
+        if (!is_object($this->_oConn)) {
+            try {
+                $this->_oConn = new PDO($this->_dns, $this->_username, $this->_pass);
             } catch (PDOException $ex) {
                 echo "Problem z połączeniem: " . $ex->getMessage() . 'linijka ' . $ex->getLine();
             }
-            
-        }else{
+        } else {
             return $this->_oConn;
         }
-    }  
+    }
+
 }
 
-class InsertData extends DbConnect{
+class InsertData extends DbConnect {
+
     public function __construct() {
         parent::__construct();
     }
-    
+
+    public function create_exercise1() {
+        $sQuery = "create table categories (
+                        id serial,
+                        parent_id int8,
+                        name varchar not null default '',
+                        primary key (id)
+                    );
+        ";
+        //CREATE UNIQUE INDEX ui_categorytable ON categories (parent_id , name);
+        //alter table category add foreign key (parent_id) references categories (id)
+
+        try {
+            $this->_oConn->beginTransaction();
+               echo $this->_oConn->exec($sQuery);
+            $this->_oConn->commit();  
+            echo "Proces wykonany pomyślnie";
+        } catch (PDOException $ex) {
+            $this->_oConn->rollBack();
+            echo "Transakcje z funckcj create_exercise1 w pliku ". $ex->getFile() . " nie zostały zakończone pomyślnie: <br />" . $ex->getMessage();
+        }
+    }
+
     public function insert_exercise1() {
         
     }
-    public function insert_exercise2() {
-        
-    }
+
 }
 
-class category extends dbconnect{
+class category extends dbconnect {
+
     public function __construct() {
         parent::__construct();
     }
+
     public function showTree() {
-               
+        
     }
 
 }
 
-
+$oData = new InsertData();
+$oData->create_exercise1();
