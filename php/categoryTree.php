@@ -102,9 +102,9 @@ class InsertData extends DbConnect {
                         name varchar(100) not null default '',
                         primary key (id)
                     );
-        ";
-        //CREATE UNIQUE INDEX ui_categorytable ON categories (parent_id , name);
-        //alter table category add foreign key (parent_id) references categories (id)
+        
+        CREATE UNIQUE INDEX ui_categorytable ON categories (parent_id , name);";
+        //alter table categories add foreign key (parent_id) references categories (id)";
 
         try {
             $this->_oConn->beginTransaction();
