@@ -79,6 +79,7 @@ class DbConnect {
         if (!is_object($this->_oConn)) {
             try {
                 $this->_oConn = new PDO($this->_dns, $this->_username, $this->_pass);
+                $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $ex) {
                 echo "Problem z połączeniem: " . $ex->getMessage() . 'linijka ' . $ex->getLine();
             }
