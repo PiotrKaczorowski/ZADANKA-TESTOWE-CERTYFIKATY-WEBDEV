@@ -79,7 +79,10 @@ class DbConnect {
         if (!is_object($this->_oConn)) {
             try {
                 $this->_oConn = new PDO($this->_dns, $this->_username, $this->_pass);
-                $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                // set transactions
+                // you must have innodb engine
+                $this->_oConn->setAttribute(PDO::ATTR_AUTOCOMMIT,0);
+                $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);                
             } catch (PDOException $ex) {
                 echo "Problem z połączeniem: " . $ex->getMessage() . 'linijka ' . $ex->getLine();
             }
@@ -102,7 +105,7 @@ class InsertData extends DbConnect {
                         parent_id mediumint,
                         name varchar(100) not null default '',
                         primary key (id)
-                    );
+                    ) ENGINE = InnoDB;
         
         CREATE UNIQUE INDEX ui_categorytable ON categories (parent_id , name);
         alter table categories add foreign key (parent_id) references categories (id);";
@@ -123,19 +126,20 @@ class InsertData extends DbConnect {
                     id BIGINT, 
                     name text not null default '',
                     primary key (id)
-                   )";
+                   ) ENGINE = InnoDB";
 
         $sQuery2 = "create tabaale relationship (
                     first_id BIGINT,
                     second_id BIGINT,
                     depth TINYINT,
                     primary key (first_id , second_id)
-                   )";
+                   ) ENGINE = InnoDB";
 
         $sQuery3 = "alter table relationship add foreign key (first_id)  references categories2 (id)";
         $sQuery4 = "alter table relationship add foreign key (second_id) references categories2 (id)";
  
-        $this->_oConn->beginTransaction();
+        //$this->_oConn->beginTransaction();
+        $this->_oConn->query('BEGIN TRANSACTION');
         try {          
             for($i=1;$i<=4;$i++){
                 $sVarName =  'sQuery' . $i;
@@ -144,15 +148,16 @@ class InsertData extends DbConnect {
                     echo $query . "jest ok.<br />";
                 }else{
                     echo $query . "have error.<br />";
-                }   
-                   
+                }                 
             } 
             echo "Proces wykonany pomyślnie";
         } catch (PDOException $ex) {
-            $this->_oConn->rollBack();
+            //$this->_oConn->rollBack();
+            $this->_oConn->query('ROOL BACK');
             echo "Transakcje z funkcji create_exercise2 w pliku ". $ex->getFile() . " nie zostały zakończone pomyślnie: <br />" . $ex->getMessage();
         }
-        $this->_oConn->commit();  
+        $this->_oConn->query('COMMIT');
+        //$this->_oConn->commit();  
     }
 }
 
