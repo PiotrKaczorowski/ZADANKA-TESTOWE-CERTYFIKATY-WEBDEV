@@ -114,14 +114,46 @@ class InsertData extends DbConnect {
             echo "Proces wykonany pomyślnie";
         } catch (PDOException $ex) {
             $this->_oConn->rollBack();
-            echo "Transakcje z funckcj create_exercise1 w pliku ". $ex->getFile() . " nie zostały zakończone pomyślnie: <br />" . $ex->getMessage();
+            echo "Transakcje z funkcji create_exercise1 w pliku ". $ex->getFile() . " nie zostały zakończone pomyślnie: <br />" . $ex->getMessage();
         }
     }
 
-    public function insert_exercise1() {
-        
-    }
+    public function create_exercise2() {
+        $sQuery1 = "create table categories3sddd (
+                    id BIGINT, 
+                    name text not null default '',
+                    primary key (id)
+                   )";
 
+        $sQuery2 = "create tabaale relationship (
+                    first_id BIGINT,
+                    second_id BIGINT,
+                    depth TINYINT,
+                    primary key (first_id , second_id)
+                   )";
+
+        $sQuery3 = "alter table relationship add foreign key (first_id)  references categories2 (id)";
+        $sQuery4 = "alter table relationship add foreign key (second_id) references categories2 (id)";
+ 
+        $this->_oConn->beginTransaction();
+        try {          
+            for($i=1;$i<=4;$i++){
+                $sVarName =  'sQuery' . $i;
+                $query = $this->_oConn->prepare($$sVarName)->execute();
+                if($query){
+                    echo $query . "jest ok.<br />";
+                }else{
+                    echo $query . "have error.<br />";
+                }   
+                   
+            } 
+            echo "Proces wykonany pomyślnie";
+        } catch (PDOException $ex) {
+            $this->_oConn->rollBack();
+            echo "Transakcje z funkcji create_exercise2 w pliku ". $ex->getFile() . " nie zostały zakończone pomyślnie: <br />" . $ex->getMessage();
+        }
+        $this->_oConn->commit();  
+    }
 }
 
 class category extends dbconnect {
@@ -137,4 +169,4 @@ class category extends dbconnect {
 }
 
 $oData = new InsertData();
-$oData->create_exercise1();
+$oData->create_exercise2();
