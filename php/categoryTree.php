@@ -97,18 +97,18 @@ class InsertData extends DbConnect {
 
     public function create_exercise1() {
         $sQuery = "create table categories (
-                        id serial,
-                        parent_id serial,
+                        id mediumint NOT NULL AUTO_INCREMENT,
+                        parent_id mediumint,
                         name varchar(100) not null default '',
                         primary key (id)
                     );
         
-        CREATE UNIQUE INDEX ui_categorytable ON categories (parent_id , name);";
-        //alter table categories add foreign key (parent_id) references categories (id)";
+        CREATE UNIQUE INDEX ui_categorytable ON categories (parent_id , name);
+        alter table categories add foreign key (parent_id) references categories (id);";
 
         try {
             $this->_oConn->beginTransaction();
-               echo $this->_oConn->exec($sQuery);
+               $this->_oConn->exec($sQuery);
             $this->_oConn->commit();  
             echo "Proces wykonany pomyślnie";
         } catch (PDOException $ex) {
