@@ -67,7 +67,21 @@ class DataTree extends DbConnect {
   linux         solaris  linux   windows
                          /    \
                      glibc1   glibc2
-     */
+ *********************************************************************************** 
+ * catagory:                
+ * id | parent_id | name                
+ * ---------------------                
+ * 1  |     1     | sql                 
+ * 2  |     1     | postgresql          
+ * 3  |     1     | oracle              
+ * 4  |     2     | linux               
+ * 5  |     3     | solaris             
+ * 6  |     3     | linux               
+ * 7  |     3     | windows             
+ * 8  |     6     | glibc1              
+ * 9  |     6     | glibc2  
+ * 
+*/
     public function insertExercise1() {
        
         $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 1 , 1 , 'sql')" ;
