@@ -111,53 +111,68 @@ class InsertData extends DbConnect {
         alter table categories add foreign key (parent_id) references categories (id);";
 
         try {
-            $this->_oConn->beginTransaction();
-               $this->_oConn->exec($sQuery);
-            $this->_oConn->commit();  
-            echo "Proces wykonany pomyślnie";
+            $this->_oConn->exec($sQuery);
+            echo "Proces wykonany OK.";
         } catch (PDOException $ex) {
-            $this->_oConn->rollBack();
-            echo "Transakcje z funkcji create_exercise1 w pliku ". $ex->getFile() . " nie zostały zakończone pomyślnie: <br />" . $ex->getMessage();
+            echo 'Problem w ' . $ex->getTrace()[1]['function'] . ' przy tworzeniu tabel. <br />Message: ' . $ex->getMessage() . "<br /><br />";
         }
     }
 
     public function create_exercise2() {
-        $sQuery1 = "create table categories3sddd (
-                    id BIGINT, 
+        $aQuery[] = "create table categories2 (
+                    id BIGINT not null AUTO_INCREMENT, 
                     name text not null default '',
                     primary key (id)
                    ) ENGINE = InnoDB";
 
-        $sQuery2 = "create tabaale relationship (
+        $aQuery[] = "create table relationship (
                     first_id BIGINT,
                     second_id BIGINT,
                     depth TINYINT,
                     primary key (first_id , second_id)
                    ) ENGINE = InnoDB";
 
-        $sQuery3 = "alter table relationship add foreign key (first_id)  references categories2 (id)";
-        $sQuery4 = "alter table relationship add foreign key (second_id) references categories2 (id)";
- 
-        //$this->_oConn->beginTransaction();
-        $this->_oConn->query('BEGIN TRANSACTION');
+        $aQuery[] = "alter table relationship add foreign key (first_id)  references categories2 (id)";
+        $aQuery[] = "alter table relationship add foreign key (second_id) references categories2 (id)";
+       
         try {          
-            for($i=1;$i<=4;$i++){
-                $sVarName =  'sQuery' . $i;
-                $query = $this->_oConn->prepare($$sVarName)->execute();
-                if($query){
-                    echo $query . "jest ok.<br />";
-                }else{
-                    echo $query . "have error.<br />";
-                }                 
-            } 
-            echo "Proces wykonany pomyślnie";
+                //$sVarName =  'sQuery' . $i;
+              foreach($aQuery as $statement) {
+                //$query = $this->_oConn->prepare($$sVarName)->execute();
+                $query = $this->_oConn->prepare($statement)->execute();  
+//                if($query){
+//                    echo "The tables have been created<br />";
+//                }else{
+//                    echo "Something wrong with creating tables<br />";
+//                }    
+              }
+            echo "Proces wykonany OK";
         } catch (PDOException $ex) {
-            //$this->_oConn->rollBack();
-            $this->_oConn->query('ROOL BACK');
-            echo "Transakcje z funkcji create_exercise2 w pliku ". $ex->getFile() . " nie zostały zakończone pomyślnie: <br />" . $ex->getMessage();
+            echo 'Problem w ' . $ex->getTrace()[1]['function'] . ' przy tworzeniu tabel. <br />Message: ' . $ex->getMessage() . "<br /><br />";
         }
-        $this->_oConn->query('COMMIT');
-        //$this->_oConn->commit();  
+    }
+    
+    public function insertExercise2() {
+       
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Jan4')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Ada4')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Iza4')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Ryś4')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Grześ4')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Jadwiga4')" ;
+        
+ 
+        $this->_oConn->beginTransaction();
+        try {          
+              foreach($aQuery as $statement) {
+                $this->_oConn->exec($statement);  
+              }           
+              $this->_oConn->commit();  
+              echo "Proces insertowania wykonany OK";
+        } catch (PDOException $ex) {
+            $this->_oConn->rollBack();
+            echo 'Problem w ' . $ex->getTrace()[1]['function'] . ' przy insertowaniu do tabel. <br />Message: ' . $ex->getMessage() . "<br /><br />";
+        }
     }
 }
 
@@ -175,3 +190,4 @@ class category extends dbconnect {
 
 $oData = new InsertData();
 $oData->create_exercise2();
+$oData->insertExercise2();
