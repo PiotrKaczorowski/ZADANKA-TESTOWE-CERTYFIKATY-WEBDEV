@@ -12,8 +12,8 @@
 class DbConnect {
 
     private $_dns = 'mysql:host=localhost;dbname=categorytree';
-    private $_username = 'root';
-    private $_pass = '';
+    private $_username = 'tree';
+    private $_pass = 'tree';
     protected $_oConn;
 
     protected function __construct() {
@@ -185,6 +185,33 @@ class DataTree extends DbConnect {
         $aQuery[] = "INSERT INTO categories2 (name) VALUES ('windows')" ;
         $aQuery[] = "INSERT INTO categories2 (name) VALUES ('glibc1')" ;
         $aQuery[] = "INSERT INTO categories2 (name) VALUES ('glibc2')" ;
+        
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,1,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (2,2,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (3,3,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (4,4,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (5,5,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (6,6,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (7,7,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (8,8,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (9,9,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,2,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,3,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,4,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,5,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,6,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,7,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,8,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,9,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (2,3,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (3,5,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (3,6,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (3,7,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (3,8,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (3,9,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,1,0)" ;
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,1,0)" ;
+        
         
         $this->_oConn->beginTransaction();
         try {          
