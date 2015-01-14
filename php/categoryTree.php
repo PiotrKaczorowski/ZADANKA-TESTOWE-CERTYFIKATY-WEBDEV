@@ -100,7 +100,7 @@ class DataTree extends DbConnect {
               $this->_oConn->exec($statement);  
             }           
             $this->_oConn->commit();  
-            echo "Proces insertowania wykonany OK";
+            echo "Proces insertowania wykonany OK. <br />";
         } catch (PDOException $ex) {
             $this->_oConn->rollBack();
             echo 'Problem w ' . $ex->getTrace()[1]['function'] . ' przy insertowaniu do tabel. <br />Message: ' . $ex->getMessage() . "<br /><br />";
@@ -219,7 +219,7 @@ class DataTree extends DbConnect {
               $this->_oConn->exec($statement);  
             }           
             $this->_oConn->commit();  
-            echo "Proces insertowania wykonany OK";
+            echo "Proces insertowania wykonany OK. <br />";
         } catch (PDOException $ex) {
             $this->_oConn->rollBack();
             echo 'Problem w ' . $ex->getTrace()[1]['function'] . ' przy insertowaniu do tabel. <br />Message: ' . $ex->getMessage() . "<br /><br />";
