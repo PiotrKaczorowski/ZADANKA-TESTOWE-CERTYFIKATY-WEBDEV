@@ -90,7 +90,6 @@ class DbConnect {
             return $this->_oConn;
         }
     }
-
 }
 
 class InsertData extends DbConnect {
@@ -154,14 +153,13 @@ class InsertData extends DbConnect {
     
     public function insertExercise2() {
        
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Jan4')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Ada4')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Iza4')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Ryś4')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Grześ4')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Jadwiga4')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Jan')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Ada')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Iza')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Ryś')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Grześ')" ;
+        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Jadwiga')" ;
         
- 
         $this->_oConn->beginTransaction();
         try {          
               foreach($aQuery as $statement) {
