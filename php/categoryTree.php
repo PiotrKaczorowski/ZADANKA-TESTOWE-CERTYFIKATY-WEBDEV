@@ -12,8 +12,8 @@
 class DbConnect {
 
     private $_dns = 'mysql:host=localhost;dbname=categorytree';
-    private $_username = 'tree';
-    private $_pass = 'tree';
+    private $_username = 'categorytree';
+    private $_pass = 's5PrXEy3LwVD6MDs';
     protected $_oConn;
 
     protected function __construct() {
@@ -27,7 +27,7 @@ class DbConnect {
                 $this->_oConn->setAttribute(PDO::ATTR_AUTOCOMMIT,0);
                 $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);                
             } catch (PDOException $ex) {
-                echo "Problem z połączeniem: " . $ex->getMessage() . 'linijka ' . $ex->getLine();
+                echo "Connection problem: " . $ex->getMessage() . '. <br />Line: ' . $ex->getLine();
             }
         } else {
             return $this->_oConn;
