@@ -79,6 +79,7 @@ class DbConnect {
         if (!is_object($this->_oConn)) {
             try {
                 $this->_oConn = new PDO($this->_dns, $this->_username, $this->_pass);
+                $this->_oConn->exec('SET CHARACTER SET utf8');
                 // set transactions
                 // you must have innodb engine
                 $this->_oConn->setAttribute(PDO::ATTR_AUTOCOMMIT,0);
