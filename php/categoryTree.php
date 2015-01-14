@@ -2,13 +2,13 @@
 
 /*
  * 
-  sql
-  /   \
-  postgresql    oracle-----__
-  |        /    |        \
-  linux   solaris  linux   windows
-  /     \
-  glibc1   glibc2
+              sql
+            /      \
+  postgresql        oracle------
+  |               /      |      \
+  linux         solaris  linux   windows
+                         /    \
+                     glibc1   glibc2
  * 
  * 1)
  * create table categories (
@@ -38,13 +38,13 @@
  * alter table relationship add foreign key (first_id)  references categories2 (id);
  * alter table relationship add foreign key (second_id) references categories2 (id);
  * 
-  sql
-  /   \
-  postgresql    oracle-----__
-  |        /    |        \
-  linux   solaris  linux   windows
-  /     \
-  glibc1   glibc2
+              sql
+            /      \
+  postgresql        oracle------
+  |               /      |      \
+  linux         solaris  linux   windows
+                         /    \
+                     glibc1   glibc2
  * catagory:
  * id | name                first_id|second_id|depth        first_id|second_id|depth  
  * ---------                ------------------------        ------------------------
@@ -79,6 +79,7 @@ class DbConnect {
         if (!is_object($this->_oConn)) {
             try {
                 $this->_oConn = new PDO($this->_dns, $this->_username, $this->_pass);
+                // set pl charset
                 $this->_oConn->exec('SET CHARACTER SET utf8');
                 // set transactions
                 // you must have innodb engine
@@ -117,7 +118,40 @@ class InsertData extends DbConnect {
             echo 'Problem w ' . $ex->getTrace()[1]['function'] . ' przy tworzeniu tabel. <br />Message: ' . $ex->getMessage() . "<br /><br />";
         }
     }
-
+    /*
+              sql
+            /      \
+  postgresql        oracle------
+  |               /      |      \
+  linux         solaris  linux   windows
+                         /    \
+                     glibc1   glibc2
+     */
+    public function insertExercise1() {
+       
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 1 , 1 , 'sql')" ;
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 2 , 1 , 'postgresql')" ;
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 3 , 1 , 'oracle')" ;
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 4 , 2 , 'linux')" ;
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 5 , 3 , 'solaris')" ;
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 6 , 3 , 'linux')" ;
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 7 , 3 , 'windows')" ;
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 8 , 6 , 'glibc1')" ;
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 9 , 6 , 'glibc2')" ;
+        
+        $this->_oConn->beginTransaction();
+        try {          
+            foreach($aQuery as $statement) {
+              $this->_oConn->exec($statement);  
+            }           
+            $this->_oConn->commit();  
+            echo "Proces insertowania wykonany OK";
+        } catch (PDOException $ex) {
+            $this->_oConn->rollBack();
+            echo 'Problem w ' . $ex->getTrace()[1]['function'] . ' przy insertowaniu do tabel. <br />Message: ' . $ex->getMessage() . "<br /><br />";
+        }
+    }
+    
     public function create_exercise2() {
         $aQuery[] = "create table categories2 (
                     id BIGINT not null AUTO_INCREMENT, 
@@ -154,20 +188,23 @@ class InsertData extends DbConnect {
     
     public function insertExercise2() {
        
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Jan')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Ada')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Iza')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Ryś')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Grześ')" ;
-        $aQuery[] = "INSERT INTO categories2 (name) VALUES ('Jadwiga')" ;
+        $aQuery[] = "INSERT INTO categories (parent_id , name) VALUES ( 1 , 'sql')" ;
+        $aQuery[] = "INSERT INTO categories (parent_id , name) VALUES ( 2 , 'postgresql')" ;
+        $aQuery[] = "INSERT INTO categories (parent_id , name) VALUES ( 3 , 'oracle')" ;
+        $aQuery[] = "INSERT INTO categories (parent_id , name) VALUES ( 4 , 'linux')" ;
+        $aQuery[] = "INSERT INTO categories (parent_id , name) VALUES ( 5 , 'solaris')" ;
+        $aQuery[] = "INSERT INTO categories (parent_id , name) VALUES ( 6 , 'linux')" ;
+        $aQuery[] = "INSERT INTO categories (parent_id , name) VALUES ( 7 , 'windows')" ;
+        $aQuery[] = "INSERT INTO categories (parent_id , name) VALUES ( 8 , 'glibc1')" ;
+        $aQuery[] = "INSERT INTO categories (parent_id , name) VALUES ( 9 , 'glibc2')" ;
         
         $this->_oConn->beginTransaction();
         try {          
-              foreach($aQuery as $statement) {
-                $this->_oConn->exec($statement);  
-              }           
-              $this->_oConn->commit();  
-              echo "Proces insertowania wykonany OK";
+            foreach($aQuery as $statement) {
+              $this->_oConn->exec($statement);  
+            }           
+            $this->_oConn->commit();  
+            echo "Proces insertowania wykonany OK";
         } catch (PDOException $ex) {
             $this->_oConn->rollBack();
             echo 'Problem w ' . $ex->getTrace()[1]['function'] . ' przy insertowaniu do tabel. <br />Message: ' . $ex->getMessage() . "<br /><br />";
@@ -188,5 +225,7 @@ class category extends dbconnect {
 }
 
 $oData = new InsertData();
+$oData->create_exercise1();
+$oData->insertExercise1();
 $oData->create_exercise2();
 $oData->insertExercise2();
