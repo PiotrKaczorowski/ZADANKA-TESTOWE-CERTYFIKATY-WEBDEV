@@ -227,20 +227,38 @@ class DataTree extends DbConnect {
     }
 }
 
-class category extends dbconnect {
+class Category extends dbconnect {
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function showTree() {
-        
+    public function showTree($idParent=1) {
+        $query = $this->_oConn->prepare("Select name , id from categories WHERE parent_id = :parent_id ORDER BY id ASC");
+        $query->bindValue(':parent_id', $idParent , PDO::PARAM_INT);
+        if($query->execute()){
+            $link = '';
+            foreach($query->fetchAll() as $key => $val) {
+                //$parentid = $val['parent_id'] + 1 ;
+                $link .= "<a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a>===";
+            }
+        }else{
+            echo "Brak kategorii.";
+        }
+        return substr($link, 0 , -3);
     }
 
 }
 
-$oData = new DataTree();
-$oData->create_exercise1();
-$oData->insertExercise1();
-$oData->create_exercise2();
-$oData->insertExercise2();
+//$oData = new DataTree();
+//$oData->create_exercise1();
+//$oData->insertExercise1();
+//$oData->create_exercise2();
+//$oData->insertExercise2();
+
+$oShow = new Category();
+if(isset($_GET['idParent'])){
+    echo $oShow->showTree($_GET['idParent']);
+}else{
+    echo $oShow->showTree(1);
+}
