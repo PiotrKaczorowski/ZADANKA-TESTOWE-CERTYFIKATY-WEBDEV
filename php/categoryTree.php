@@ -45,7 +45,7 @@ class DataTree extends DbConnect {
 
     public function create_exercise1() {
         $sQuery = "create table categories (
-                        id mediumint NOT NULL AUTO_INCREMENT,
+                        id mediumint AUTO_INCREMENT,
                         parent_id mediumint,
                         name varchar(100) not null default '',
                         primary key (id)
@@ -240,14 +240,15 @@ class Category extends dbconnect {
         parent::__construct();
     }
     public function fillTable() {
-        $query = $this->_oConn->prepare("SELECT id, parent_id, name FROM categories ORDER BY id ASC");
+        $query = $this->_oConn->prepare("SELECT id, parent_id, name FROM categories ORDER BY id DESC");
         $query->execute();
-        $aResoult = $query->fetchAll(PDO::FETCH_ASSOC);
-        
-        if(count($aResoult)){
-            echo '<pre>';
-            print_r($aResoult);
-        }
+        $aResult = $query->fetchAll(PDO::FETCH_ASSOC);
+        $i = count($aResult);
+        while($i--) {
+            $aParseResult[$aResult[$i]['parent_id']][$aResult[$i]['id']] = $aResult[$i]['name'];          
+        }        
+        echo '<pre>';
+        print_r($aParseResult);
     }
     public function showTree($idParent) {       
         $query = $this->_oConn->prepare("SELECT name , id FROM categories WHERE parent_id = :parent_id ORDER BY id ASC");
@@ -278,7 +279,7 @@ $oShow = new Category();
 if (isset($_GET['idParent'])) {
      echo $oShow->showTree($_GET['idParent']);
 } else {
-     echo $oShow->showTree(1);
+     echo $oShow->showTree(0);
 }
 
 $oShow->fillTable();
