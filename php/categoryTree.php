@@ -68,8 +68,8 @@ class DataTree extends DbConnect {
   2postgresql     3oracle------
   |               /      |      \
   4linux         5solaris  6linux   7windows
-                         /    \
-                   8glibc1   9glibc2
+                           /    \
+                      8glibc1   9glibc2
      * ********************************************************************************** 
      * catagory:                
      * id | parent_id | name                
@@ -245,7 +245,7 @@ class Category extends dbconnect {
         $aResult = $query->fetchAll(PDO::FETCH_ASSOC);
         $i = count($aResult);
         while($i--) {
-            $aParseResult[$aResult[$i]['parent_id']][$aResult[$i]['id']] = $aResult[$i]['name'];          
+            $aParseResult[$aResult[$i]['id']][$aResult[$i]['parent_id']] = $aResult[$i]['name'];          
         }        
         echo '<pre>';
         print_r($aParseResult);
@@ -282,4 +282,4 @@ if (isset($_GET['idParent'])) {
      echo $oShow->showTree(0);
 }
 
-//$oShow->fillTable();
+$oShow->fillTable();
