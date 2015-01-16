@@ -51,8 +51,8 @@ class DataTree extends DbConnect {
                         primary key (id)
                     ) ENGINE = InnoDB;
         
-        CREATE UNIQUE INDEX ui_categorytable ON categories (parent_id , name);
-        alter table categories add foreign key (parent_id) references categories (id);";
+        CREATE UNIQUE INDEX ui_categorytable ON categories (parent_id , name);";
+        //alter table categories add foreign key (parent_id) references categories (id);";
 
         try {
             $this->_oConn->exec($sQuery);
@@ -282,4 +282,4 @@ if (isset($_GET['idParent'])) {
      echo $oShow->showTree(0);
 }
 
-$oShow->fillTable();
+//$oShow->fillTable();
