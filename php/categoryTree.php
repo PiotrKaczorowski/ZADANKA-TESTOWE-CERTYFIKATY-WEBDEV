@@ -233,27 +233,30 @@ class DataTree extends DbConnect {
 }
 
 class Category extends dbconnect {
-
+    
+    private $_tree = '';
+    
     public function __construct() {
         parent::__construct();
     }
 
     public function showTree($idParent) {
+        
         $query = $this->_oConn->prepare("SELECT name , id FROM categories WHERE parent_id = :parent_id ORDER BY id ASC");
         $query->bindValue(':parent_id', $idParent, PDO::PARAM_INT);
-        if ($query->execute() && count($q = $query->fetchAll())) {
-            //$link = '';
-            echo '<ul>';        
-            foreach ($q as $key => $val) {
-                if($val['id']!=$idParent){
-                    echo "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
-                    $this->showTree($val['id']);
-                }else{
-                    echo "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
+        if ($query->execute() && count($q = $query->fetchAll())) {           
+            $this->_tree .= '<ul>';        
+                foreach ($q as $key => $val) {
+                    if($val['id']!=$idParent){
+                        $this->_tree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
+                            $this->showTree($val['id']);
+                    }else{
+                        $this->_tree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
+                    }
                 }
-           }
-            echo '</ul>'; 
+            $this->_tree .= '</ul>'; 
         } 
+        return $this->_tree;
     }
 
 }
@@ -266,7 +269,7 @@ class Category extends dbconnect {
 
 $oShow = new Category();
 if (isset($_GET['idParent'])) {
-     $oShow->showTree($_GET['idParent']);
+     echo $oShow->showTree($_GET['idParent']);
 } else {
-     $oShow->showTree(1);
+     echo $oShow->showTree(1);
 }
