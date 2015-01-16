@@ -63,13 +63,13 @@ class DataTree extends DbConnect {
     }
 
     /*
-              sql
+              1sql
             /      \
-  postgresql        oracle------
+  2postgresql     3oracle------
   |               /      |      \
-  linux         solaris  linux   windows
+  4linux         5solaris  6linux   7windows
                          /    \
-                   glibc1   glibc2
+                   8glibc1   9glibc2
      * ********************************************************************************** 
      * catagory:                
      * id | parent_id | name                
