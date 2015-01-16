@@ -1,13 +1,13 @@
 <?php
 
 /*
-  sql
-  /      \
+              sql
+            /      \
   postgresql        oracle------
   |               /      |      \
   linux         solaris  linux   windows
-  /    \
-  glibc1   glibc2
+                         /    \
+                   glibc1   glibc2
  */
 
 class DbConnect {
@@ -63,13 +63,13 @@ class DataTree extends DbConnect {
     }
 
     /*
-      sql
-      /      \
-      postgresql        oracle------
-      |               /      |      \
-      linux         solaris  linux   windows
-      /    \
-      glibc1   glibc2
+              sql
+            /      \
+  postgresql        oracle------
+  |               /      |      \
+  linux         solaris  linux   windows
+                         /    \
+                   glibc1   glibc2
      * ********************************************************************************** 
      * catagory:                
      * id | parent_id | name                
@@ -146,13 +146,13 @@ class DataTree extends DbConnect {
     }
 
     /*
-      sql
-      /      \
-      postgresql        oracle------
-      |               /      |      \
-      linux         solaris  linux   windows
-      /    \
-      glibc1   glibc2
+              sql
+            /      \
+  postgresql        oracle------
+  |               /      |      \
+  linux         solaris  linux   windows
+                         /    \
+                   glibc1   glibc2
 
      * ********************************************************************************** 
      * catagory:                relationship:
@@ -238,25 +238,22 @@ class Category extends dbconnect {
         parent::__construct();
     }
 
-    public function showTree($idParent = 1) {
+    public function showTree($idParent) {
         $query = $this->_oConn->prepare("SELECT name , id FROM categories WHERE parent_id = :parent_id ORDER BY id ASC");
         $query->bindValue(':parent_id', $idParent, PDO::PARAM_INT);
-        if ($query->execute()) {
-            $link = '';
-            foreach ($query->fetchAll() as $key => $val) {
-                //$parentid = $val['parent_id'] + 1 ;
-                $link .= "<a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a>===";
-                $iNumberRows = $this->_oConn->prepare("SELECT id FROM categories WHERE parent_id = {$val['id']}");
-                $iNumberRows->execute();
-                if (count($iNumberRows->fetchAll())) {
+        if ($query->execute() && count($q = $query->fetchAll())) {
+            //$link = '';
+            echo '<ul>';        
+            foreach ($q as $key => $val) {
+                if($val['id']!=$idParent){
+                    echo "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
                     $this->showTree($val['id']);
+                }else{
+                    echo "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
                 }
-            }
-        } else {
-            echo "Brak kategorii.";
-        }
-
-        return substr($link, 0, -3);
+           }
+            echo '</ul>'; 
+        } 
     }
 
 }
@@ -269,7 +266,7 @@ class Category extends dbconnect {
 
 $oShow = new Category();
 if (isset($_GET['idParent'])) {
-    echo $oShow->showTree($_GET['idParent']);
+     $oShow->showTree($_GET['idParent']);
 } else {
-    echo $oShow->showTree(1);
+     $oShow->showTree(1);
 }
