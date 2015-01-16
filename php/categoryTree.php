@@ -239,9 +239,17 @@ class Category extends dbconnect {
     public function __construct() {
         parent::__construct();
     }
-
-    public function showTree($idParent) {
+    public function fillTable() {
+        $query = $this->_oConn->prepare("SELECT id, parent_id, name FROM categories ORDER BY id ASC");
+        $query->execute();
+        $aResoult = $query->fetchAll(PDO::FETCH_ASSOC);
         
+        if(count($aResoult)){
+            echo '<pre>';
+            print_r($aResoult);
+        }
+    }
+    public function showTree($idParent) {       
         $query = $this->_oConn->prepare("SELECT name , id FROM categories WHERE parent_id = :parent_id ORDER BY id ASC");
         $query->bindValue(':parent_id', $idParent, PDO::PARAM_INT);
         if ($query->execute() && count($q = $query->fetchAll())) {           
@@ -258,7 +266,6 @@ class Category extends dbconnect {
         } 
         return $this->_tree;
     }
-
 }
 
 //$oData = new DataTree();
@@ -273,3 +280,5 @@ if (isset($_GET['idParent'])) {
 } else {
      echo $oShow->showTree(1);
 }
+
+$oShow->fillTable();
