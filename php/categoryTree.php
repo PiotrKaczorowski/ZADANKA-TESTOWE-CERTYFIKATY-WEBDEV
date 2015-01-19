@@ -236,11 +236,46 @@ class Category extends dbconnect {
     
     private $_tree = '';
     private $_aTree = '';
+    private $_aTree2 = '';
+    private $_aTree3 = '';
     
     public function __construct() {
         parent::__construct();
     }
-    private function fillTable() {
+    private function fillTableExercise2() {
+        $aParseResult = array();
+        $query = $this->_oConn->prepare("SELECT first_id, second_id , name , depth "
+                . "FROM categories2 as cat JOIN relationship as rs ON (cat.id = rs.first_id)"
+                . " ORDER BY first_id ASC");
+        $query->execute();
+        $aResult = $query->fetchAll(PDO::FETCH_ASSOC);
+        foreach($aResult as $k => $v) {
+            //if($v['depth']>0)
+                $aParseResult[$v['first_id']][$v['second_id']] = $v['name'];         
+        }
+        
+        return $aParseResult;
+    }
+    public function showTreeFromTabExercise2($first_id , $depth) {       
+        $aResults = $this->fillTableExercise2();
+       echo '<pre>';
+        print_r($aResults);
+//        $this->_aTree3 .= '<ul>';    
+//            if(isset($aResults[$first_id]) && $depth>0){
+//                foreach($aResults[$first_id] as $second_id => $aVal) {
+//                    echo $first_id;
+////                    $depth = key($aVal);
+////                    $name = $aVal[$depth];
+////                   if(isset($aResults[$first_id])) {
+////                    $this->_aTree3 .= "<li><a href='{$_SERVER['PHP_SELF']}?firstId={$second_id}&depth={$depth}' > {$name} </a></li>";                     
+////                    $this->showTreeFromTabExercise2($second_id , $depth);
+////                   }
+//                }
+//            }
+//        $this->_aTree3 .= '</ul>';         
+//        return $this->_aTree3;
+    }
+    private function fillTableExercise1() {
         $query = $this->_oConn->prepare("SELECT id, parent_id, name FROM categories ORDER BY id DESC");
         $query->execute();
         $aResult = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -250,19 +285,19 @@ class Category extends dbconnect {
         }        
         return $aParseResult;
     }
-    public function showTreeFromTab($idParent) {       
-        $aResults = $this->fillTable();
-            $this->_aTree .= '<ul>';    
+    public function showTreeFromTabExercise1($idParent) {       
+        $aResults = $this->fillTableExercise1();
+        $this->_aTree .= '<ul>';    
             if(isset($aResults[$idParent])){
                 foreach($aResults[$idParent] as $id => $name) {
                         $this->_aTree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$id}' > {$name} </a></li>";                     
-                        $this->showTreeFromTab($id);
+                        $this->showTreeFromTabExercise1($id);
                 }
             }
-                    $this->_aTree .= '</ul>';         
+        $this->_aTree .= '</ul>';         
         return $this->_aTree;
     }
-    public function showTree($idParent) {       
+    public function showTreeExercise1($idParent) {       
         $query = $this->_oConn->prepare("SELECT name , id FROM categories WHERE parent_id = :parent_id ORDER BY id ASC");
         $query->bindValue(':parent_id', $idParent, PDO::PARAM_INT);
         if ($query->execute() && count($q = $query->fetchAll())) {           
@@ -270,7 +305,7 @@ class Category extends dbconnect {
                 foreach ($q as $key => $val) {
                     if($val['id']!=$idParent){
                         $this->_tree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
-                            $this->showTree($val['id']);
+                            $this->showTreeExercise1($val['id']);
                     }else{
                         $this->_tree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
                     }
@@ -288,12 +323,14 @@ class Category extends dbconnect {
 //$oData->insertExercise2();
 
 $oShow = new Category();
-if (isset($_GET['idParent'])) {
-     echo $oShow->showTree($_GET['idParent']);
-     echo $oShow->showTreeFromTab($_GET['idParent']);
+if (isset($_GET['idParent']) || (isset($_GET['firstId']) && $_GET['depth'])) {
+     //echo $oShow->showTreeExercise1($_GET['idParent']);
+     //echo $oShow->showTreeFromTabExercise1($_GET['idParent']);
+     echo $oShow->showTreeFromTabExercise2($_GET['firstId'],$_GET['depth']);
 } else {
-     echo $oShow->showTree(0);
-     echo $oShow->showTreeFromTab(0);
+     //echo $oShow->showTreeExercise1(0);
+     //echo $oShow->showTreeFromTabExercise1(0);
+     echo $oShow->showTreeFromTabExercise2(1,1);
 }
 
 
