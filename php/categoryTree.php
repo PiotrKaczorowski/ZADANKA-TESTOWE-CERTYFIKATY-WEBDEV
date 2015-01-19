@@ -235,20 +235,32 @@ class DataTree extends DbConnect {
 class Category extends dbconnect {
     
     private $_tree = '';
+    private $_aTree = '';
     
     public function __construct() {
         parent::__construct();
     }
-    public function fillTable() {
+    private function fillTable() {
         $query = $this->_oConn->prepare("SELECT id, parent_id, name FROM categories ORDER BY id DESC");
         $query->execute();
         $aResult = $query->fetchAll(PDO::FETCH_ASSOC);
         $i = count($aResult);
         while($i--) {
-            $aParseResult[$aResult[$i]['id']][$aResult[$i]['parent_id']] = $aResult[$i]['name'];          
+            $aParseResult[$aResult[$i]['parent_id']][$aResult[$i]['id']] = $aResult[$i]['name'];          
         }        
-        echo '<pre>';
-        print_r($aParseResult);
+        return $aParseResult;
+    }
+    public function showTreeFromTab($idParent) {       
+        $aResults = $this->fillTable();
+            $this->_aTree .= '<ul>';    
+            if(isset($aResults[$idParent])){
+                foreach($aResults[$idParent] as $id => $name) {
+                        $this->_aTree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$id}' > {$name} </a></li>";                     
+                        $this->showTreeFromTab($id);
+                }
+            }
+                    $this->_aTree .= '</ul>';         
+        return $this->_aTree;
     }
     public function showTree($idParent) {       
         $query = $this->_oConn->prepare("SELECT name , id FROM categories WHERE parent_id = :parent_id ORDER BY id ASC");
@@ -278,8 +290,10 @@ class Category extends dbconnect {
 $oShow = new Category();
 if (isset($_GET['idParent'])) {
      echo $oShow->showTree($_GET['idParent']);
+     echo $oShow->showTreeFromTab($_GET['idParent']);
 } else {
      echo $oShow->showTree(0);
+     echo $oShow->showTreeFromTab(0);
 }
 
-$oShow->fillTable();
+
