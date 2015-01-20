@@ -235,7 +235,7 @@ class DataTree extends DbConnect {
 class Category extends dbconnect {
     
     private $_tree = '';
-    private $_aTree = '';
+    private $_treeTable = '';
     private $_aTree2 = '';
     private $_aTree3 = '';
     private $_aParseResult = array();
@@ -271,7 +271,7 @@ class Category extends dbconnect {
         }
         return $this->_aTree3;
     }
-    private function fillTableExercise1() {
+    public function fillTableExercise1() {
         $query = $this->_oConn->prepare("SELECT id, parent_id, name FROM categories ORDER BY id DESC");
         $query->execute();
         $aResult = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -281,19 +281,19 @@ class Category extends dbconnect {
         }        
         return $aParseResult;
     }
-    public function showTreeFromTabExercise1($idParent) {       
-        $aResults = $this->fillTableExercise1();
-        $this->_aTree .= '<ul>';    
+    public function showTreeFromTabExercise1($idParent,$aResults) {       
+       
+        $this->_treeTable .= '<ul>';    
             if(isset($aResults[$idParent])){
                 foreach($aResults[$idParent] as $id => $name) {
-                        $this->_aTree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$id}' > {$name} </a></li>";                     
-                        $this->showTreeFromTabExercise1($id);
+                        $this->_treeTable .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$id}' >  $name </a></li>";                     
+                        $this->showTreeFromTabExercise1($id, $this->fillTableExercise1());
                 }
             }
-        $this->_aTree .= '</ul>';         
-        return $this->_aTree;
+        $this->_treeTable .= '</ul>';         
+        return $this->_treeTable;
     }
-    public function showTreeExercise1($idParent) {       
+    public function showTreeExercise1($idParent) {    
         $query = $this->_oConn->prepare("SELECT name , id FROM categories WHERE parent_id = :parent_id ORDER BY id ASC");
         $query->bindValue(':parent_id', $idParent, PDO::PARAM_INT);
         if ($query->execute() && count($q = $query->fetchAll())) {           
@@ -319,16 +319,16 @@ class Category extends dbconnect {
 $oShow = new Category();
 
 if (isset($_GET['idParent'])) {
-     echo $oShow->showTreeExercise1($_GET['idParent']);
-     echo $oShow->showTreeFromTabExercise1($_GET['idParent']);   
+  //  echo $oShow->showTreeExercise1($_GET['idParent']);
+     echo $oShow->showTreeFromTabExercise1($_GET['idParent'] ,$oShow->fillTableExercise1());   
 } else {
-     echo $oShow->showTreeExercise1(0);
-     echo $oShow->showTreeFromTabExercise1(0);
+  //   echo $oShow->showTreeExercise1(1);
+     echo $oShow->showTreeFromTabExercise1(1 , $oShow->fillTableExercise1());
 }
 
-if(isset($_GET['firstId'])) {
-     echo $oShow->showTreeFromTabExercise2($_GET['firstId'],$oShow->fillTableExercise2());
-}else{
-     echo $oShow->showTreeFromTabExercise2(1,$oShow->fillTableExercise2());
-}
+//if(isset($_GET['firstId'])) {
+//     echo $oShow->showTreeFromTabExercise2($_GET['firstId'],$oShow->fillTableExercise2());
+//}else{
+//     echo $oShow->showTreeFromTabExercise2(1,$oShow->fillTableExercise2());
+//}
 
