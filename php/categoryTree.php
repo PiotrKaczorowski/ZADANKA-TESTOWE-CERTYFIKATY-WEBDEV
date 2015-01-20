@@ -246,7 +246,7 @@ class Category extends dbconnect {
     public function fillTableExercise2() {
         $query = $this->_oConn->prepare("SELECT first_id, second_id , cat.name as name , depth "
                 . "FROM categories2 as cat INNER JOIN relationship as rs ON (cat.id = rs.second_id)"
-                . "AND depth = 1"
+                . "WHERE depth >= 0"
                 . " ORDER BY second_id ASC");
 //        $query = $this->_oConn->prepare("SELECT first_id, second_id , cat.name as name , cat.name as name , depth FROM relationship rs , categories2 cat "
 //                . "WHERE cat.id = rs.second_id AND rs.depth = 1  ORDER BY second_id ASC");
@@ -262,15 +262,17 @@ class Category extends dbconnect {
         return $this->_aParseResult;
     }
     public function showTreeFromTabExercise2($first_id , $aResults) {
-      
-        $this->_aTree3 .= '<ul>';    
-            if(isset($aResults[$first_id])){
+        if(count($aResults) && isset($aResults[$first_id])){
+            $this->_aTree3 .= '<ul>';    
                 foreach($aResults[$first_id] as $second_id => $val) {
-                    $this->_aTree3 .= "<li><a href='{$_SERVER['PHP_SELF']}?firstId={$second_id}' > {$val['name']} </a></li>";                     
-                    $this->showTreeFromTabExercise2($second_id , $aResults);
-                 }
-            }
-        $this->_aTree3 .= '</ul>';         
+                     if($val['first_id']!=$val['second_id']){
+                         $this->showTreeFromTabExercise2($second_id , $aResults);
+                     }else{
+                          $this->_aTree3 .= "<li><a href='{$_SERVER['PHP_SELF']}?firstId={$second_id}' > {$val['name']} </a></li>";                     
+                     }
+                }
+            $this->_aTree3 .= '</ul>';         
+        }
         return $this->_aTree3;
     }
     private function fillTableExercise1() {
@@ -301,11 +303,9 @@ class Category extends dbconnect {
         if ($query->execute() && count($q = $query->fetchAll())) {           
             $this->_tree .= '<ul>';        
                 foreach ($q as $key => $val) {
+                    $this->_tree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
                     if($val['id']!=$idParent){
-                        $this->_tree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
-                            $this->showTreeExercise1($val['id']);
-                    }else{
-                        $this->_tree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
+                        $this->showTreeExercise1($val['id']);
                     }
                 }
             $this->_tree .= '</ul>'; 
