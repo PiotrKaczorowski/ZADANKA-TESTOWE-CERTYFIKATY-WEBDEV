@@ -246,7 +246,7 @@ class Category extends dbconnect {
     public function fillTableExercise2() {
         $query = $this->_oConn->prepare("SELECT first_id, second_id , cat.name as name , depth "
                 . "FROM categories2 as cat INNER JOIN relationship as rs ON (cat.id = rs.second_id)"
-                . "WHERE depth >= 0"
+                . "WHERE depth < 2" 
                 . " ORDER BY second_id ASC");
 //        $query = $this->_oConn->prepare("SELECT first_id, second_id , cat.name as name , cat.name as name , depth FROM relationship rs , categories2 cat "
 //                . "WHERE cat.id = rs.second_id AND rs.depth = 1  ORDER BY second_id ASC");
@@ -264,14 +264,14 @@ class Category extends dbconnect {
     public function showTreeFromTabExercise2($first_id , $aResults) {
         if(count($aResults) && isset($aResults[$first_id])){
             $this->_aTree3 .= '<ul>';    
-                foreach($aResults[$first_id] as $second_id => $val) {
+                foreach($aResults[$first_id] as $val) {
                      if($val['first_id']!=$val['second_id']){
-                         $this->showTreeFromTabExercise2($second_id , $aResults);
+                         $this->showTreeFromTabExercise2($val['second_id'] , $aResults);
                      }else{
-                          $this->_aTree3 .= "<li><a href='{$_SERVER['PHP_SELF']}?firstId={$second_id}' > {$val['name']} </a></li>";                     
+                          $this->_aTree3 .= "<li><a href='{$_SERVER['PHP_SELF']}?firstId={$val['second_id']}' > {$val['name']} </a>";                     
                      }
                 }
-            $this->_aTree3 .= '</ul>';         
+            $this->_aTree3 .= '</li></ul>';         
         }
         return $this->_aTree3;
     }
