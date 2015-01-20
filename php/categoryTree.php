@@ -72,7 +72,7 @@ class DataTree extends DbConnect {
                       8glibc1   9glibc2
      * ********************************************************************************** 
      * catagory:                
-     * id | parent_id | name                
+     * id | parent_id/first_id | name                
      * ---------------------                
      * 1  |     1     | sql                 
      * 2  |     1     | postgresql          
@@ -207,7 +207,7 @@ class DataTree extends DbConnect {
         $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,7,2)";
         $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,8,3)";
         $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (1,9,3)";
-        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (2,3,1)";
+        $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (2,4,1)";
         $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (3,5,1)";
         $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (3,6,1)";
         $aQuery[] = "INSERT INTO relationship (first_id , second_id , depth) VALUES (3,7,1)";
@@ -238,42 +238,40 @@ class Category extends dbconnect {
     private $_aTree = '';
     private $_aTree2 = '';
     private $_aTree3 = '';
+    private $_aParseResult = array();
     
     public function __construct() {
         parent::__construct();
     }
-    private function fillTableExercise2() {
-        $aParseResult = array();
-        $query = $this->_oConn->prepare("SELECT first_id, second_id , name , depth "
-                . "FROM categories2 as cat JOIN relationship as rs ON (cat.id = rs.first_id)"
-                . " ORDER BY first_id ASC");
+    public function fillTableExercise2() {
+        $query = $this->_oConn->prepare("SELECT first_id, second_id , cat.name as name , depth "
+                . "FROM categories2 as cat INNER JOIN relationship as rs ON (cat.id = rs.second_id)"
+                . "AND depth = 1"
+                . " ORDER BY second_id ASC");
+//        $query = $this->_oConn->prepare("SELECT first_id, second_id , cat.name as name , cat.name as name , depth FROM relationship rs , categories2 cat "
+//                . "WHERE cat.id = rs.second_id AND rs.depth = 1  ORDER BY second_id ASC");
         $query->execute();
         $aResult = $query->fetchAll(PDO::FETCH_ASSOC);
         foreach($aResult as $k => $v) {
             //if($v['depth']>0)
-                $aParseResult[$v['first_id']][$v['second_id']] = $v['name'];         
+                $this->_aParseResult[$v['first_id']][$v['second_id']] = $v;        
         }
-        
-        return $aParseResult;
+        echo '<pre>';
+        print_r($this->_aParseResult);
+ 
+        return $this->_aParseResult;
     }
-    public function showTreeFromTabExercise2($first_id , $depth) {       
-        $aResults = $this->fillTableExercise2();
-       echo '<pre>';
-        print_r($aResults);
-//        $this->_aTree3 .= '<ul>';    
-//            if(isset($aResults[$first_id]) && $depth>0){
-//                foreach($aResults[$first_id] as $second_id => $aVal) {
-//                    echo $first_id;
-////                    $depth = key($aVal);
-////                    $name = $aVal[$depth];
-////                   if(isset($aResults[$first_id])) {
-////                    $this->_aTree3 .= "<li><a href='{$_SERVER['PHP_SELF']}?firstId={$second_id}&depth={$depth}' > {$name} </a></li>";                     
-////                    $this->showTreeFromTabExercise2($second_id , $depth);
-////                   }
-//                }
-//            }
-//        $this->_aTree3 .= '</ul>';         
-//        return $this->_aTree3;
+    public function showTreeFromTabExercise2($first_id , $aResults) {
+      
+        $this->_aTree3 .= '<ul>';    
+            if(isset($aResults[$first_id])){
+                foreach($aResults[$first_id] as $second_id => $val) {
+                    $this->_aTree3 .= "<li><a href='{$_SERVER['PHP_SELF']}?firstId={$second_id}' > {$val['name']} </a></li>";                     
+                    $this->showTreeFromTabExercise2($second_id , $aResults);
+                 }
+            }
+        $this->_aTree3 .= '</ul>';         
+        return $this->_aTree3;
     }
     private function fillTableExercise1() {
         $query = $this->_oConn->prepare("SELECT id, parent_id, name FROM categories ORDER BY id DESC");
@@ -323,14 +321,15 @@ class Category extends dbconnect {
 //$oData->insertExercise2();
 
 $oShow = new Category();
-if (isset($_GET['idParent']) || (isset($_GET['firstId']) && $_GET['depth'])) {
+if (isset($_GET['idParent']) || isset($_GET['firstId'])) {
      //echo $oShow->showTreeExercise1($_GET['idParent']);
      //echo $oShow->showTreeFromTabExercise1($_GET['idParent']);
-     echo $oShow->showTreeFromTabExercise2($_GET['firstId'],$_GET['depth']);
+    
+     echo $oShow->showTreeFromTabExercise2($_GET['firstId'],$oShow->fillTableExercise2());
 } else {
      //echo $oShow->showTreeExercise1(0);
      //echo $oShow->showTreeFromTabExercise1(0);
-     echo $oShow->showTreeFromTabExercise2(1,1);
+     echo $oShow->showTreeFromTabExercise2(1,$oShow->fillTableExercise2());
 }
 
 
