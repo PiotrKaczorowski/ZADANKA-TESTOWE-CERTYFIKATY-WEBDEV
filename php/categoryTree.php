@@ -74,7 +74,7 @@ class DataTree extends DbConnect {
      * catagory:                
      * id | parent_id/first_id | name                
      * ---------------------                
-     * 1  |     1     | sql                 
+     * 1  |     0     | sql                 
      * 2  |     1     | postgresql          
      * 3  |     1     | oracle              
      * 4  |     2     | linux               
@@ -88,7 +88,7 @@ class DataTree extends DbConnect {
 
     public function insertExercise1() {
 
-        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 1 , 1 , 'sql')";
+        $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 1 , 0 , 'sql')";
         $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 2 , 1 , 'postgresql')";
         $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 3 , 1 , 'oracle')";
         $aQuery[] = "INSERT INTO categories (id , parent_id , name) VALUES ( 4 , 2 , 'linux')";
@@ -255,6 +255,7 @@ class Category extends dbconnect {
         foreach($aResult as $k => $v) {
                 $this->_aParseResult[$v['first_id']][$v['second_id']] = $v;        
         }
+         
         return $this->_aParseResult;
     }
     public function showTreeFromTabExercise2($first_id , $aResults) {
@@ -278,7 +279,8 @@ class Category extends dbconnect {
         $i = count($aResult);
         while($i--) {
             $aParseResult[$aResult[$i]['parent_id']][$aResult[$i]['id']] = $aResult[$i]['name'];          
-        }        
+        }    
+      
         return $aParseResult;
     }
     public function showTreeFromTabExercise1($idParent,$aResults) {       
@@ -310,21 +312,21 @@ class Category extends dbconnect {
     }
 }
 
-//$oData = new DataTree();
-//$oData->create_exercise1();
-//$oData->insertExercise1();
-//$oData->create_exercise2();
-//$oData->insertExercise2();
+$oData = new DataTree();
+$oData->create_exercise1();
+$oData->insertExercise1();
+$oData->create_exercise2();
+$oData->insertExercise2();
 
 $oShow = new Category();
 
-if (isset($_GET['idParent'])) {
-  //  echo $oShow->showTreeExercise1($_GET['idParent']);
-     echo $oShow->showTreeFromTabExercise1($_GET['idParent'] ,$oShow->fillTableExercise1());   
-} else {
-  //   echo $oShow->showTreeExercise1(1);
-     echo $oShow->showTreeFromTabExercise1(1 , $oShow->fillTableExercise1());
-}
+//if (isset($_GET['idParent'])) {
+//    echo $oShow->showTreeExercise1($_GET['idParent']);
+//    echo $oShow->showTreeFromTabExercise1($_GET['idParent'] ,$oShow->fillTableExercise1());   
+//} else {
+//    echo $oShow->showTreeExercise1(0);
+//    echo $oShow->showTreeFromTabExercise1(0 , $oShow->fillTableExercise1());
+//}
 
 //if(isset($_GET['firstId'])) {
 //     echo $oShow->showTreeFromTabExercise2($_GET['firstId'],$oShow->fillTableExercise2());
