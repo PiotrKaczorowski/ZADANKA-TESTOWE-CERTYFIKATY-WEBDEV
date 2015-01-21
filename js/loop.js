@@ -9,7 +9,7 @@ function appendChildren() {
 // Mock of decorateDiv function for testing purposes
 function decorateDiv(allDiv) {
     var newDiv = document.createElement("div");
-    allDiv.appendChild(newDiv);
+    allDiv[i].appendChild(newDiv);
 }
 $('document').ready(function(){
     appendChildren();

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.js"></script>
+        <script>
+            function formatDate(userDate) {
+
+                var aDate = userDate.split('/');
+                if (aDate[0] <= 9) {
+                    aDate[0] = '0' + aDate[0];
+                }
+                if (aDate[1] <= 9) {
+                    aDate[1] = '0' + aDate[1];
+                }
+                return aDate['2'] + aDate['0'] + aDate['1'];
+            }
+            $(function () {
+                console.log(formatDate('2/1/2014'));
+            });
+
+
+        </script>
+    </head>
+    <body>
+        <div id="a">
+            <div id="b">
+            </div>
+        </div>
+    </body>
+</html>
