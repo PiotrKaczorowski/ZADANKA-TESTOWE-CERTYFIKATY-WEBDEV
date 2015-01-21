@@ -236,8 +236,7 @@ class Category extends dbconnect {
     
     private $_tree = '';
     private $_treeTable = '';
-    private $_aTree2 = '';
-    private $_aTree3 = '';
+    private $_treeTable2 = '';
     private $_aParseResult = array();
     
     public function __construct() {
@@ -258,20 +257,6 @@ class Category extends dbconnect {
          
         return $this->_aParseResult;
     }
-    public function showTreeFromTabExercise2($first_id , $aResults) {
-        if(count($aResults) && isset($aResults[$first_id])){
-            $this->_aTree3 .= '<ul>';    
-                foreach($aResults[$first_id] as $val) {
-                     if($val['first_id']!=$val['second_id']){
-                         $this->showTreeFromTabExercise2($val['second_id'] , $aResults);
-                     }else{
-                          $this->_aTree3 .= "<li><a href='{$_SERVER['PHP_SELF']}?firstId={$val['second_id']}' > {$val['name']} </a>";                     
-                     }
-                }
-            $this->_aTree3 .= '</li></ul>';         
-        }
-        return $this->_aTree3;
-    }
     public function fillTableExercise1() {
         $query = $this->_oConn->prepare("SELECT id, parent_id, name FROM categories ORDER BY id DESC");
         $query->execute();
@@ -283,54 +268,69 @@ class Category extends dbconnect {
       
         return $aParseResult;
     }
-    public function showTreeFromTabExercise1($idParent,$aResults) {       
-       
-        $this->_treeTable .= '<ul>';    
-            if(isset($aResults[$idParent])){
-                foreach($aResults[$idParent] as $id => $name) {
-                        $this->_treeTable .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$id}' >  $name </a></li>";                     
-                        $this->showTreeFromTabExercise1($id, $this->fillTableExercise1());
+    public function showTreeFromTabExercise2($first_id , $aResults) {
+        if(count($aResults) && isset($aResults[$first_id])){
+            $this->_treeTable2 .= '<ul>';    
+                foreach($aResults[$first_id] as $val) {
+                     if($val['first_id']!=$val['second_id']){
+                         $this->showTreeFromTabExercise2($val['second_id'] , $aResults);
+                     }else{
+                          $this->_treeTable2 .= "<li><a href='{$_SERVER['PHP_SELF']}?firstId={$val['second_id']}' > {$val['name']} </a>";                     
+                     }
                 }
-            }
-        $this->_treeTable .= '</ul>';         
+            $this->_treeTable2 .= '</li></ul>';         
+        }
+        return $this->_treeTable2;
+    }
+    public function showTreeFromTabExercise1($idParent,$aResults) {       
+        if(isset($aResults[$idParent])){
+            $this->_treeTable .= '<ul>';    
+                foreach($aResults[$idParent] as $id => $name) {
+                    $this->_treeTable .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$id}' > {$name} </a>";                      
+                    if($id!=$idParent){
+                         $this->showTreeFromTabExercise1($id , $aResults);
+                    }
+                }
+            $this->_treeTable .= '</li></ul>';         
+        }
         return $this->_treeTable;
     }
     public function showTreeExercise1($idParent) {    
         $query = $this->_oConn->prepare("SELECT name , id FROM categories WHERE parent_id = :parent_id ORDER BY id ASC");
         $query->bindValue(':parent_id', $idParent, PDO::PARAM_INT);
-        if ($query->execute() && count($q = $query->fetchAll())) {           
-            $this->_tree .= '<ul>';        
-                foreach ($q as $key => $val) {
-                    $this->_tree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a></li>";
-                    if($val['id']!=$idParent){
-                        $this->showTreeExercise1($val['id']);
+        if ($query->execute() && count($aResults = $query->fetchAll())) {  
+                $this->_tree .= '<ul>';        
+                    foreach ($aResults as $val) {
+                        $this->_tree .= "<li><a href='{$_SERVER['PHP_SELF']}?idParent={$val['id']}' > {$val['name']} </a>";
+                        if($val['id']!=$idParent){
+                            $this->showTreeExercise1($val['id']);
+                        }
                     }
-                }
-            $this->_tree .= '</ul>'; 
+                $this->_tree .= '</li></ul>'; 
         } 
         return $this->_tree;
     }
 }
 
-$oData = new DataTree();
-$oData->create_exercise1();
-$oData->insertExercise1();
-$oData->create_exercise2();
-$oData->insertExercise2();
+//$oData = new DataTree();
+//$oData->create_exercise1();
+//$oData->insertExercise1();
+//$oData->create_exercise2();
+//$oData->insertExercise2();
 
 $oShow = new Category();
 
-//if (isset($_GET['idParent'])) {
-//    echo $oShow->showTreeExercise1($_GET['idParent']);
-//    echo $oShow->showTreeFromTabExercise1($_GET['idParent'] ,$oShow->fillTableExercise1());   
-//} else {
-//    echo $oShow->showTreeExercise1(0);
-//    echo $oShow->showTreeFromTabExercise1(0 , $oShow->fillTableExercise1());
-//}
+if (isset($_GET['idParent'])) {
+    echo $oShow->showTreeExercise1($_GET['idParent']);
+    echo $oShow->showTreeFromTabExercise1($_GET['idParent'] ,$oShow->fillTableExercise1());   
+} else {
+    echo $oShow->showTreeExercise1(0);
+    echo $oShow->showTreeFromTabExercise1(0 , $oShow->fillTableExercise1());
+}
 
-//if(isset($_GET['firstId'])) {
-//     echo $oShow->showTreeFromTabExercise2($_GET['firstId'],$oShow->fillTableExercise2());
-//}else{
-//     echo $oShow->showTreeFromTabExercise2(1,$oShow->fillTableExercise2());
-//}
+if(isset($_GET['firstId'])) {
+     echo $oShow->showTreeFromTabExercise2($_GET['firstId'],$oShow->fillTableExercise2());
+}else{
+     echo $oShow->showTreeFromTabExercise2(1,$oShow->fillTableExercise2());
+}
 
