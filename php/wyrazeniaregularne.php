@@ -73,8 +73,10 @@ $myPregReplace->showResutls();
 
 
 class PregMatch {
+    
     function my_pregmatch($str) {
-        if(preg_match('/k..[^w]a/', $str, $matches )){
+        $matches = array();
+        if(preg_match('/([0-9])+/', $str, $matches )){
             return $matches;
         }else{
             return 'Nie pasuje do wzorca';
@@ -83,4 +85,6 @@ class PregMatch {
 }
 
 $pregmatch = new PregMatch;
-print_r($pregmatch->my_pregmatch('kurka'));
+//print_r($pregmatch->my_pregmatch('Janusz wisi Andrzejowi 125zł i powiedział, że odda za 2 lata.'));
+preg_match('/(\d+)(\D+)(\d+)/', 'Janusz wisi Andrzejowi 125zł i powiedział, że odda za 2 lata.', $matches );
+print_r($matches);

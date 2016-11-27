@@ -45,6 +45,7 @@ class NamesCount {
                 } else {
                     $nameCount = 1;
                 }
+                //budujemy tablicę
                 $this->counts[$name] = $nameCount;
                 
                 $this->count++;
@@ -54,7 +55,9 @@ class NamesCount {
                 return $this->counts[$name] / $this->count;
             }
             
-
+            public function displayTabName() {
+                return $this->counts;
+            }
         }
 
 // For testing purposes (do not submit uncommented):
@@ -64,7 +67,10 @@ $namesCount->addName('James');
 $namesCount->addName('John');
 $namesCount->addName('Mary');
 $namesCount->addName('Mary');
-
+$namesCount->addName('Mary');
+$namesCount->addName('John');
+echo '<pre>';
+print_r($namesCount->displayTabName());
 
 echo $namesCount->nameProportion('John');
 echo '<br />'.$namesCount->nameProportion('Mary');

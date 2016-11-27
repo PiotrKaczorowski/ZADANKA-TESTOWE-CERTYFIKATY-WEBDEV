@@ -17,9 +17,10 @@ class AreAnagrams {
             $string = $b;
 
             foreach ($array as $val) {
-                if (strpos($string, $val) === false) {
-                    return false;
-                }
+                if (strpos($string, $val) === false) return false;
+                $string = preg_replace("/{$val}/", '', $string , 1);
+                //$string = str_replace($val, "", $string);
+                echo $string . '<br>';
             }
         } else {
             return false;
