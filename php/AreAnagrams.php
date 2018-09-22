@@ -13,26 +13,18 @@ class AreAnagrams {
     public static function areStringsAnagrams($a, $b) {
 
         if (strlen($a) == strlen($b)) {
-            $array = str_split($a);
-            $string = $b;
+            $aFirstWord = str_split($a);
+            $sSecondWord = $b;
 
-            foreach ($array as $val) {
-                if (strpos($string, $val) === false) return false;
-                $string = preg_replace("/{$val}/", '', $string , 1);
-                //$string = str_replace($val, "", $string);
-                echo $string . '<br>';
+            foreach ($aFirstWord as $val) {
+                if (strpos($sSecondWord, $val) === false) return false;
+                // delete only one character
+                $sSecondWord = preg_replace("/{$val}/", '', $sSecondWord , 1);
             }
+            return true;
         } else {
             return false;
         }
-       
-        return true;
-
-        //throw new Exception('Waiting to be implemented.');
     }
-
 }
-
-// For testing purposes (do not submit uncommented):
-
-echo AreAnagrams::areStringsAnagrams('momdad', 'dadmom') ? 'True' : 'False';
+echo AreAnagrams::areStringsAnagrams('momdad', 'ddmoam') ? 'True' : 'False';
