@@ -12,6 +12,7 @@ class Palindrome
         
     }
 }
+
 var_dump(Palindrome::isPalindrome2018('Noel sees L?eon.'));
 
 
