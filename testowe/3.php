@@ -8,11 +8,15 @@ class Palindrome
 
     public static function isPalindrome2018($str) {
          $str = self::convertString($str);
-         return($str === strrev($str)) ? true : false;
+         return($str === strrev($str)) ? "true" : "false";
         
     }
 }
 
-var_dump(Palindrome::isPalindrome2018('Noel sees L?eon.'));
+echo Palindrome::isPalindrome2018('Noel sees L?eon.');
+echo Palindrome::isPalindrome2018('ala.');   // Example case
+echo Palindrome::isPalindrome2018('lalaa');               // Simple cases
+echo Palindrome::isPalindrome2018('Łał');               // Edge cases
+echo Palindrome::isPalindrome2018('123 Łoł 321 ! .');       // Complex cases
 
 
