@@ -1,5 +1,5 @@
 <?php
-class Problem
+class myCalculate
 {
     public static function average($a, $b)
     {
